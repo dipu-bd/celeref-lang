@@ -1,0 +1,21 @@
+{
+  "$schema": "file:///C:/Users/Dipu/Projects/celeref-parser/schema.json",
+
+  "version": 1,
+  "name": "Reaper Scans",
+  "baseUrl": ["https://reaperscans.com"],
+  "iconUrl": "https://reaperscans.com/storage/android-icon-192x192.png",
+
+  "fetchCatalog": {
+    "set-state": "https://reaperscans.com/comics",
+    "call": "fetch_soup",
+    "copy-state": "soup",
+    "dot-call": {
+      "args": ["#content .row > .text-muted"]
+    },
+    "loop": {}
+  },
+
+  "fetchChapterContents": {},
+  "fetchDetails": {}
+}
