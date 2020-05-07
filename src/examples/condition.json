@@ -1,0 +1,33 @@
+{
+  "$schema": "file:///C:/Users/Dipu/Projects/celeref-parser/src/schema/schema.json",
+
+  "name": "Variable Test",
+  "app": {
+    "block": [
+      {
+        "set-state": false
+      },
+      {
+        "if": [
+          {
+            "set-state": false
+          }
+        ]
+      },
+      {
+        "else": [
+          {
+            "set-state": true
+          }
+        ]
+      },
+      {
+        "if": [
+          {
+            "set-state": "I was inside else"
+          }
+        ]
+      }
+    ]
+  }
+}

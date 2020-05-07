@@ -1,16 +1,28 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "file:///C:/Users/Dipu/Projects/celeref-parser/schema/properties.json",
 
   "title": "JSON schema for the parser",
   "description": "Definitions for the JSON schema",
   "type": "object",
+
+  "required": ["app"],
+
+  "properties": {
+    "name": {
+      "description": "Name of the app",
+      "type": "string"
+    },
+    "app": {
+      "$ref": "#/definitions/statement"
+    }
+  },
 
   "definitions": {
     "function": {
       "description": "A callable funtion",
       "type": "object",
       "required": ["method"],
+      "additionalProperties": false,
       "properties": {
         "method": {
           "description": "Method name to call",
@@ -27,6 +39,7 @@
         }
       }
     },
+
     "statement": {
       "description": "",
       "type": "object",
@@ -40,7 +53,7 @@
         },
 
         "copy": {
-          "description": "Copy a variable to a new variable.\n\nThe pattern is: ```{ 'new-variable-name': 'existing-variable-name' }```.\n\nHere keys are the names of new variables, and values are names of existing variables. If a variable does not exists, new variable's value will be set to null. If new variable name already exists, it's value will be replaced.",
+          "description": "Declare a set of variable with values from existing ones.\n\nThe keys of this object are the names of new variables, and values are names of existing variables. If a variable does not exists, new variable's value will be set to null. If new variable name already exists, it's value will be replaced.",
           "type": "object",
           "propertyNames": { "minLength": 1 },
           "patternProperties": {
@@ -71,17 +84,17 @@
         },
 
         "if": {
-          "description": "Runs this block only if the current state evaluates to True. A state will be evaluated to True, when it is not zero, empty, null, or undefined.",
+          "description": "Runs this block only if the current state evaluates to True. A state will be evaluated to True, when it is true, non-zero, non-null, or not empty.",
           "$ref": "#/definitions/statement/properties/block"
         },
 
         "else": {
-          "description": "Runs this block only if the current state evaluates to False. A state will be evaluated to True, when it is not zero, empty, null, or undefined.",
+          "description": "Runs this block only if the current state evaluates to False. A state will be evaluated False, when it is false, zero, null or empty.",
           "$ref": "#/definitions/statement/properties/block"
         },
 
         "loop": {
-          "description": "Loop over every elements of the current state. Inside the loop, the current state is set to the loop iterator. All variable accessed by the parent block, can also be accessed here by adding `parent:` prefix to the variable name. e.g., to access parent's state, variable name would be `parent:state`.\n\nAt the end of this block, you can set the `block:result` variable. The next state will be an array of this `block:result` values.",
+          "description": "Loop over every elements of the current state.\n\nState does not necessarily be a list; If state is a number, loops over 0 to state; if state is a string, loops over every characters; if state is an object, loops over very (key,value) pair.\n\nInside the loop, the current state is set to the loop iterator. All variable accessed by the parent block, can also be accessed here. \n\nThe final state of this block will be stored into a collection. The next state will be set to this collection.",
           "$ref": "#/definitions/statement/properties/block"
         },
 
@@ -102,29 +115,21 @@
 
         "call": {
           "description": "Calls a function with current state as argument. The next state will be the output of the function",
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "method": { "$ref": "public-methods.json" }
-              }
-            },
-            { "$ref": "#/definitions/function" }
-          ]
+          "$ref": "#/definitions/function"
         },
 
-        "function": {
+        "method": {
           "description": "Declare a local function that can be called using `call` statement.\n\nYou should set the `block:result` at the end of function block. The next state will be the `block:result` object if available, otherwise the previous state before calling this function.\n\nProvided arguments will be in `args`. Named arguments provided to `kwargs` will have their own named variable. To access parent block's variable add `parent:` prefix before variable name. e.g. To access parent's state, use `parent:state`",
           "type": "object",
-          "allOf": [
-            {
-              "type": "object",
-              "properties": {
-                "block": { "$ref": "#/definitions/statement/properties/block" }
-              }
+          "properties": {
+            "name": {
+              "description": "Name of the function",
+              "type": "string"
             },
-            { "$ref": "#/definitions/function" }
-          ]
+            "block": {
+              "$ref": "#/definitions/statement/properties/block"
+            }
+          }
         }
       }
     }
