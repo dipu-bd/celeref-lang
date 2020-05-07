@@ -47,14 +47,17 @@
         }
       ]
     },
+
     "fetchCatalog": {
       "description": "Define steps to fetch and parse catalog list",
       "$ref": "definitions.json#/definitions/statement"
     },
+
     "fetchDetails": {
       "description": "Define steps to fetch and parse details of a catalog item",
       "$ref": "definitions.json#/definitions/statement"
     },
+
     "fetchContents": {
       "description": "Define steps to fetch and parse chapter contents",
       "$ref": "definitions.json#/definitions/statement"

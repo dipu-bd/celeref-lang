@@ -111,6 +111,20 @@
             },
             { "$ref": "#/definitions/function" }
           ]
+        },
+
+        "function": {
+          "description": "Declare a local function that can be called using `call` statement.\n\nYou should set the `block:result` at the end of function block. The next state will be the `block:result` object if available, otherwise the previous state before calling this function.\n\nProvided arguments will be in `args`. Named arguments provided to `kwargs` will have their own named variable. To access parent block's variable add `parent:` prefix before variable name. e.g. To access parent's state, use `parent:state`",
+          "type": "object",
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "block": { "$ref": "#/definitions/statement/properties/block" }
+              }
+            },
+            { "$ref": "#/definitions/function" }
+          ]
         }
       }
     }
