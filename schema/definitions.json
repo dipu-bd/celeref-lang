@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "file:///C:/Users/Dipu/Projects/celeref-parser/schema/properties.json",
+
+  "title": "JSON schema for the parser",
+  "description": "Definitions for the JSON schema",
+  "type": "object",
+
+  "definitions": {
+    "function": {
+      "description": "A callable funtion",
+      "type": "object",
+      "required": ["method"],
+      "properties": {
+        "method": {
+          "description": "Method name to call",
+          "type": "string"
+        },
+        "args": {
+          "description": "The arguments to pass\n\nYou can access a variable with #{variable-name} inside value string",
+          "type": "array"
+        },
+        "kwargs": {
+          "description": "The keyword arguments to pass\n\nYou can access a variable with #{variable-name} inside value string",
+          "type": "object",
+          "propertyNames": { "minLength": 1 }
+        }
+      }
+    },
+    "statement": {
+      "description": "",
+      "type": "object",
+      "maxProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "set": {
+          "description": "Declare a set of variable names and their values. Previous declaration of the variable will be replaced by this declaration.\n\nYou can access a variable with #{variable-name} inside value string",
+          "type": "object",
+          "propertyNames": { "minLength": 1 }
+        },
+
+        "copy": {
+          "description": "Copy a variable to a new variable.\n\nThe pattern is: ```{ 'new-variable-name': 'existing-variable-name' }```.\n\nHere keys are the names of new variables, and values are names of existing variables. If a variable does not exists, new variable's value will be set to null. If new variable name already exists, it's value will be replaced.",
+          "type": "object",
+          "propertyNames": { "minLength": 1 },
+          "patternProperties": {
+            "": { "type": "string" }
+          }
+        },
+
+        "set-state": {
+          "description": "Set a constant value to the current state"
+        },
+
+        "load-state": {
+          "description": "Load the value of a variable to the current state",
+          "type": "string"
+        },
+
+        "save-state": {
+          "description": "Copy the value of the current state to a variable",
+          "type": "string"
+        },
+
+        "block": {
+          "description": "A block of statements.\n\nAt the end of this block, you can set the `block:result` variable. The next state will be this `block:result` if available, otherwise the current `state`.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/statement"
+          }
+        },
+
+        "if": {
+          "description": "Runs this block only if the current state evaluates to True. A state will be evaluated to True, when it is not zero, empty, null, or undefined.",
+          "$ref": "#/definitions/statement/properties/block"
+        },
+
+        "else": {
+          "description": "Runs this block only if the current state evaluates to False. A state will be evaluated to True, when it is not zero, empty, null, or undefined.",
+          "$ref": "#/definitions/statement/properties/block"
+        },
+
+        "loop": {
+          "description": "Loop over every elements of the current state. Inside the loop, the current state is set to the loop iterator. All variable accessed by the parent block, can also be accessed here by adding `parent:` prefix to the variable name. e.g., to access parent's state, variable name would be `parent:state`.\n\nAt the end of this block, you can set the `block:result` variable. The next state will be an array of this `block:result` values.",
+          "$ref": "#/definitions/statement/properties/block"
+        },
+
+        "at": {
+          "description": "Access an indexed element of the current state. The current state must be an array, or map or support access via index. The next state will be the accessed value",
+          "type": ["string", "integer"]
+        },
+
+        "dot": {
+          "description": "Access any property of the current state. The next state will be the value of that property",
+          "type": "string"
+        },
+
+        "dot-call": {
+          "description": "Calls a method of the current state, with some arguments. The next state will be the output of the method",
+          "$ref": "#/definitions/function"
+        },
+
+        "call": {
+          "description": "Calls a function with current state as argument. The next state will be the output of the function",
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "method": { "$ref": "public-methods.json" }
+              }
+            },
+            { "$ref": "#/definitions/function" }
+          ]
+        }
+      }
+    }
+  }
+}

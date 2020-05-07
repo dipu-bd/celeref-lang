@@ -1,5 +1,5 @@
 {
-  "$schema": "file:///C:/Users/Dipu/Projects/celeref-parser/schema.json",
+  "$schema": "file:///C:/Users/Dipu/Projects/celeref-parser/schema/parser.json",
 
   "version": 1,
   "name": "Reaper Scans",
@@ -7,15 +7,72 @@
   "iconUrl": "https://reaperscans.com/storage/android-icon-192x192.png",
 
   "fetchCatalog": {
-    "set-state": "https://reaperscans.com/comics",
-    "call": "fetch_soup",
-    "copy-state": "soup",
-    "dot-call": {
-      "args": ["#content .row > .text-muted"]
-    },
-    "loop": {}
+    "block": [
+      { "set-state": "https://reaperscans.com/comics" },
+      {
+        "call": {
+          "method": "browser.fetch_soup",
+          "named-args": ["state"]
+        }
+      },
+      { "save-state": "soup" },
+      {
+        "dot-call": {
+          "method": "select",
+          "args": ["#content .row > .text-muted"]
+        }
+      },
+      {
+        "loop": [
+          { "save-state": "item" },
+          {
+            "dot-call": {
+              "method": "select_one",
+              "args": ["a.list-title"]
+            }
+          },
+          { "save-state": "title_elem" },
+          { "dot": "text" },
+          { "save-state": "title" },
+          { "load-state": "title_elem" },
+          { "at": "href" },
+          { "save-state": "url" },
+          { "load-state": "item" },
+          {
+            "dot-call": {
+              "method": "select_one",
+              "args": ["a.media-content"]
+            }
+          },
+          { "at": "style" },
+          {
+            "call": {
+              "method": "re.find_all",
+              "args": ["url\\((.*)\\)"]
+            }
+          },
+          { "at": 0 },
+          { "save-state": "cover_url" },
+          {
+            "set": {
+              "block:result": {
+                "title": "#{title}",
+                "url": "#{url}",
+                "cover_url": "#{cover_url}"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "set": {
+          "block:result": "#{state}"
+        }
+      }
+    ]
   },
 
-  "fetchChapterContents": {},
-  "fetchDetails": {}
+  "fetchDetails": {},
+
+  "fetchContents": {}
 }

@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+
+  "type": "string",
+  "enum": [
+    "browser.fetch_text",
+    "browser.fetch_soup",
+    "browser.fetch_json",
+    "browser.post_urlencoded",
+    "browser.post_multipart",
+    "re.find_all",
+    "re.match",
+    "re.search"
+  ]
+}
