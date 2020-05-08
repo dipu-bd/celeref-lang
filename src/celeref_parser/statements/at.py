@@ -11,8 +11,9 @@ class At(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
+        logger.debug('source: %s', self.source)
         state = self.variables['state']
-        index = self.__eval(self.source)
+        index = super()._eval(self.source)
         try:
             if hasattr(state, '__getitem__'):
                 self.variables['state'] = state[index]
@@ -20,3 +21,4 @@ class At(Statement):
                 self.variables['state'] = None
         except Union[IndexError, TypeError, KeyError]:
             self.variables['state'] = None
+        logger.debug('variables: %s', self.variables)

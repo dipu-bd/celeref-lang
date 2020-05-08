@@ -10,4 +10,6 @@ class SetVariables(Statement):
         super().__init__(body, variables=variables)
 
     def execute(self):
+        logger.debug('source: %s', self.source)
         self.variables.update(self.source)
+        logger.debug('variables: %s', self.variables)

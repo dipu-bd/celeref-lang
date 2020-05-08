@@ -1,0 +1,10 @@
+{
+  "$schema": "../src/schema/schema.json",
+  "name": "Conditional Branches",
+  "program": [
+    { "state": false },
+    { "print": "state" },
+    { "if-else": ["Inside If", "Inside Else"] },
+    { "print": "state" }
+  ]
+}

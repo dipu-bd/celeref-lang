@@ -13,44 +13,41 @@ all_statements = {}
 
 class Statement:
     def __init__(self,
-                 source: Mapping[str, Any],
+                 source: Any,
                  variables: Mapping[str, Any] = {}):
         '''Initialize a new statement'''
-        self.source: Mapping[str, Any] = source
+        self.source: Any = source
         self.variables: dict = dict()
         self.variables.update(variables or {})
         self.variables.setdefault('state', None)
-        self.methods: dict = dict()
 
     @property
     def result(self):
         '''Returns the current state'''
         return self.variables['state']
 
-    def execute(self):
+    def execute(self) -> None:
         '''Executes the script, and returns the last state'''
-        result = self.__eval(self.source)
-        self.variables['state'] = result
-        return result
+        logger.debug('source: %s', self.source)
+        self.variables['state'] = self._eval(self.source)
+        logger.debug('variables: %s', self.variables)
 
-    def __eval(self, source: Mapping[str, Any]):
+    def _eval(self, source: Any):
         '''Evaluates the source preserving the current state'''
         state = self.variables['state']
         try:
             if isinstance(source, dict):
-                key, source = source.items()[0]
+                [(key, source)] = source.items()
                 builder: Statement = all_statements[key]
                 statement = builder(source, self.variables)
-                result = statement.execute()
+                statement.execute()
                 self.variables.update(statement.variables)
-                return result
             elif isinstance(source, list):
-                for source_block in source:
-                    result = self.__eval(source_block)
-                    self.variables['state'] = result
-                return self.variables['state']
+                for block in source:
+                    self.variables['state'] = self._eval(block)
             else:
-                return source
+                self.variables['state'] = source
+            return self.variables['state']
         finally:
             self.variables['state'] = state
 

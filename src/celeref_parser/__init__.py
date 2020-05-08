@@ -12,6 +12,13 @@ from .statements import Statement
 logger = logging.getLogger(__name__)
 
 
+class Instance(Statement):
+    def __init__(self, data: Mapping[str, Any]):
+        super().__init__(data['program'])
+        self.name = data.get('name', 'program')
+        self.version = data.get('version', None)
+
+
 def read_json(filename: str) -> Mapping[str, Any]:
     data = {}
     with open(filename) as fp:
@@ -30,13 +37,6 @@ def read_json(filename: str) -> Mapping[str, Any]:
 
     validate(instance=data, schema=schema)
     return data
-
-
-class Instance(Statement):
-    def __init__(self, data: Mapping[str, Any]):
-        super().__init__(data['app'])
-        self.name = data.get('name', 'App')
-        self.version = data.get('version', None)
 
 
 def create_app(filename: str) -> Instance:

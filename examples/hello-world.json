@@ -1,5 +1,7 @@
 {
   "$schema": "../src/schema/schema.json",
   "name": "Hello World",
-  "app": "Hello World"
+  "program": {
+    "state": "Hello World"
+  }
 }

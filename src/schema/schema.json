@@ -4,14 +4,13 @@
   "description": "JSON schema for celeref programming language",
   "type": "object",
 
-  "required": ["app"],
-
+  "required": ["program"],
   "properties": {
     "name": {
       "description": "Name of the app",
       "type": "string"
     },
-    "app": {
+    "program": {
       "$ref": "#/definitions/statement"
     }
   },
@@ -107,6 +106,11 @@
           "patternProperties": {
             "": { "type": "string" }
           }
+        },
+
+        "print": {
+          "description": " Accepts the name of a variable, and prints its value to the console.",
+          "type": "string"
         },
 
         "if-else": {

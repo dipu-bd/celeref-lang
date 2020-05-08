@@ -10,11 +10,13 @@ class Loop(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
+        logger.debug('source: %s', self.source)
         output = []
         for item in self._get_list():
             self.variables['state'] = item
-            output.append(self.__eval(self.source))
+            output.append(super()._eval(self.source))
         self.variables['state'] = output
+        logger.debug('variables: %s', self.variables)
 
     def _get_list(self):
         state = self.variables['state']
