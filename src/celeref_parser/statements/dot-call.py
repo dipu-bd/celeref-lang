@@ -14,7 +14,7 @@ class DotCall(Call):
         method_name = self.source.get('method', '')
         method = getattr(self.variables['state'], method_name)
 
-        args = self._get_args()
-        kwargs = self._get_kwargs()
+        args = super()._get_args()
+        kwargs = super()._get_kwargs()
         self.variables['state'] = method(*args, **kwargs)
         logger.debug('variables: %s', self.variables)

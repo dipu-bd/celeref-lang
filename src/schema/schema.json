@@ -25,7 +25,7 @@
       "description": "A statement block",
       "oneOf": [
         { "$ref": "#/definitions/literal" },
-        { "$ref": "#/definitions/element" },
+        { "$ref": "#/definitions/expression" },
         { "$ref": "#/definitions/block" }
       ]
     },
@@ -36,14 +36,6 @@
       "items": {
         "$ref": "#/definitions/statement"
       }
-    },
-
-    "expression": {
-      "description": "An expression",
-      "oneOf": [
-        { "$ref": "#/definitions/literal" },
-        { "$ref": "#/definitions/element" }
-      ]
     },
 
     "function": {
@@ -59,20 +51,20 @@
         "args": {
           "description": "The arguments to pass.",
           "type": "array",
-          "items": { "$ref": "#/definitions/expression" }
+          "items": { "$ref": "#/definitions/statement" }
         },
         "kwargs": {
           "description": "The keyword arguments to pass.",
           "type": "object",
           "propertyNames": { "minLength": 1 },
           "patternProperties": {
-            "": { "$ref": "#/definitions/expression" }
+            "": { "$ref": "#/definitions/statement" }
           }
         }
       }
     },
 
-    "element": {
+    "expression": {
       "description": "A single statement. It consists of one and only one command.",
       "type": "object",
       "minProperties": 1,
@@ -121,7 +113,7 @@
         },
 
         "switch": {
-          "description": "An array of statement blocks with conditions. The `block` will run, if and only if the `condition` is evaluated to True",
+          "description": "An array of statement blocks with conditions.\n\nThe `true` will run, if and only if the `condition` is evaluated to True; otherwise `false` will run. Both `true` and `false` blocks are optional.",
           "type": "array",
           "items": {
             "description": "A conditional block",
@@ -129,8 +121,9 @@
             "required": ["condition"],
             "additionalProperties": false,
             "properties": {
-              "condition": { "$ref": "#/definitions/expression" },
-              "block": { "$ref": "#/definitions/statement" }
+              "condition": { "$ref": "#/definitions/statement" },
+              "true": { "$ref": "#/definitions/statement" },
+              "false": { "$ref": "#/definitions/statement" }
             }
           }
         },
@@ -144,7 +137,7 @@
           "description": "Access an indexed item of the current state. The current state must be an array, or map or support access via index. The next state will be the accessed value",
           "oneOf": [
             { "type": ["string", "integer"] },
-            { "$ref": "#/definitions/element" }
+            { "$ref": "#/definitions/expression" }
           ]
         },
 

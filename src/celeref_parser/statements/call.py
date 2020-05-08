@@ -24,12 +24,18 @@ class Call(Statement):
 
     def _get_args(self):
         args = []
+        state = self.variables['state']
         for source in self.source.get('args', []):
-            args.append(super()._eval(source))
+            super()._eval(source)
+            args.append(self.result)
+        self.variables['state'] = state
         return args
 
     def _get_kwargs(self):
         kwargs = {}
+        state = self.variables['state']
         for key, source in self.source.get('kwargs', {}):
-            kwargs[key] = super()._eval(source)
+            super()._eval(source)
+            kwargs[key] = self.result
+        self.variables['state'] = state
         return kwargs

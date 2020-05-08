@@ -1,0 +1,77 @@
+{
+  "$schema": "file:///C:/Users/Dipu/Projects/celeref-parser/src/schema/schema.json",
+
+  "app": [
+    {
+      "set": {
+        "version": 1,
+        "name": "Reaper Scans",
+        "base_url": ["https://reaperscans.com"],
+        "icon_url": "https://reaperscans.com/storage/android-icon-192x192.png"
+      }
+    },
+    [
+      { "state": "https://reaperscans.com/comics" },
+      {
+        "call": {
+          "method": "browser.fetch_soup",
+          "args": ["#{state}"]
+        }
+      },
+      { "save": "soup" },
+      {
+        "dot-call": {
+          "method": "select",
+          "args": ["#content .row > .text-muted"]
+        }
+      },
+      {
+        "loop": [
+          { "save": "item" },
+          {
+            "dot-call": {
+              "method": "select_one",
+              "args": ["a.list-title"]
+            }
+          },
+          { "save": "title_elem" },
+          { "dot": "text" },
+          { "save": "title" },
+          { "load": "title_elem" },
+          { "at": "href" },
+          { "save": "url" },
+          { "load": "item" },
+          {
+            "dot-call": {
+              "method": "select_one",
+              "args": ["a.media-content"]
+            }
+          },
+          { "at": "style" },
+          {
+            "call": {
+              "method": "re.find_all",
+              "args": ["url\\((.*)\\)"]
+            }
+          },
+          { "at": 0 },
+          { "save": "cover_url" },
+          {
+            "set": {
+              "block:result": {
+                "title": "#{title}",
+                "url": "#{url}",
+                "cover_url": "#{cover_url}"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "set": {
+          "block:result": "#{state}"
+        }
+      }
+    ]
+  ]
+}

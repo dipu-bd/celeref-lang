@@ -14,7 +14,8 @@ class Loop(Statement):
         output = []
         for item in self._get_list():
             self.variables['state'] = item
-            output.append(super()._eval(self.source))
+            super()._eval(self.source)
+            output.append(self.result)
         self.variables['state'] = output
         logger.debug('variables: %s', self.variables)
 

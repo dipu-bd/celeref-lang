@@ -13,7 +13,8 @@ class At(Statement):
     def execute(self):
         logger.debug('source: %s', self.source)
         state = self.variables['state']
-        index = super()._eval(self.source)
+        super()._eval(self.source)
+        index = self.result
         try:
             if hasattr(state, '__getitem__'):
                 self.variables['state'] = state[index]

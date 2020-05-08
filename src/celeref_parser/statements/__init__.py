@@ -29,27 +29,22 @@ class Statement:
     def execute(self) -> None:
         '''Executes the script, and returns the last state'''
         logger.debug('source: %s', self.source)
-        self.variables['state'] = self._eval(self.source)
+        self._eval(self.source)
         logger.debug('variables: %s', self.variables)
 
     def _eval(self, source: Any):
         '''Evaluates the source preserving the current state'''
-        state = self.variables['state']
-        try:
-            if isinstance(source, dict):
-                [(key, source)] = source.items()
-                builder: Statement = all_statements[key]
-                statement = builder(source, self.variables)
-                statement.execute()
-                self.variables.update(statement.variables)
-            elif isinstance(source, list):
-                for block in source:
-                    self.variables['state'] = self._eval(block)
-            else:
-                self.variables['state'] = source
-            return self.variables['state']
-        finally:
-            self.variables['state'] = state
+        if isinstance(source, dict):
+            [(key, source)] = source.items()
+            builder: Statement = all_statements[key]
+            statement = builder(source, self.variables)
+            statement.execute()
+            self.variables.update(statement.variables)
+        elif isinstance(source, list):
+            for block in source:
+                self._eval(block)
+        else:
+            self.variables['state'] = source
 
 
 # Auto-import all statements

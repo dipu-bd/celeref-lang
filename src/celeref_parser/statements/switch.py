@@ -13,8 +13,13 @@ class SwitchBlock(Statement):
         logger.debug('source: %s', self.source)
         for source in self.source:
             condition_source = source.get('condition')
-            condition = super()._eval(condition_source)
-            if condition:
-                block_source = source.get('block', [])
-                self.variables['state'] = super()._eval(block_source)
+            super()._eval(condition_source)
+            if self.variables['state']:
+                if 'true' in source:
+                    super()._eval(source['true'])
+            else:
+                if 'false' in source:
+                    super()._eval(source['false'])
+            if 'finally' in source:
+                super()._eval(source['finally'])
         logger.debug('variables: %s', self.variables)
