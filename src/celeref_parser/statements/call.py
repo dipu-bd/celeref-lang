@@ -11,12 +11,23 @@ class Call(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug(self.source)
-        args = self.source['args']
-        kwargs = self.source['kwargs']
-        state = self.variables['state']
-        method = public_functions.get(self.source, None)
+        method_name = self.source.get('method', '')
+        method = public_functions.get(method_name)
         if not method:
-            raise TypeError('No such method')
+            raise NotImplementedError("No public method '%s' is defined" % method_name)
+
+        args = self._get_args()
+        kwargs = self._get_kwargs()
         self.variables['state'] = method(*args, **kwargs)
-        logger.debug(self.variables)
+
+    def _get_args(self):
+        args = []
+        for source in self.source.get('args', []):
+            args.append(self.__eval(source))
+        return args
+
+    def _get_kwargs(self):
+        kwargs = {}
+        for key, source in self.source.get('kwargs', {}):
+            kwargs[key] = self.__eval(source)
+        return kwargs

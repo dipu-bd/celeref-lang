@@ -10,6 +10,4 @@ class Dot(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug(self.source)
         self.variables['state'] = getattr(self.variables['state'], self.source, None)
-        logger.debug(self.variables)

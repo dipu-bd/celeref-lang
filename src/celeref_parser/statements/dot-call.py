@@ -1,21 +1,18 @@
 import logging
 
-from . import Statement
+from .call import Call
 
 logger = logging.getLogger(__name__)
 
 
-class DotCall(Statement):
+class DotCall(Call):
     def __init__(self, source, variables={}):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug(self.source)
-        args = self.source['args']
-        kwargs = self.source['kwargs']
-        state = self.variables['state']
-        method = getattr(state, self.source, None)
-        if not method:
-            raise TypeError('No such method')
+        method_name = self.source.get('method', '')
+        method = getattr(self.variables['state'], method_name)
+
+        args = self._get_args()
+        kwargs = self._get_kwargs()
         self.variables['state'] = method(*args, **kwargs)
-        logger.debug(self.variables)

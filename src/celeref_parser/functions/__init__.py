@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 # This lists will be auto-generated
 public_functions: Mapping[str, Callable] = {}
 
-# Auto-import all global funtions
-_cdir_ = os.path.dirname(__file__)
-for entry in glob.glob(_cdir_ + '/*.py', recursive=True):
+# Auto-import all global functions
+_cur_dir_ = os.path.dirname(__file__)
+for entry in glob.glob(_cur_dir_ + '/*.py'):
     module_name = '.'.join(os.path.basename(entry).split('.')[:-1])
     if module_name[0] in '_.':
         continue

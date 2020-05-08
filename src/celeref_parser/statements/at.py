@@ -1,4 +1,5 @@
 import logging
+from typing import Union
 
 from . import Statement
 
@@ -10,14 +11,12 @@ class At(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug(self.source)
+        state = self.variables['state']
+        index = self.__eval(self.source)
         try:
-            state = self.variables['state']
-            self.variables['state'] = state[self.source]
-        except IndexError:
+            if hasattr(state, '__getitem__'):
+                self.variables['state'] = state[index]
+            else:
+                self.variables['state'] = None
+        except Union[IndexError, TypeError, KeyError]:
             self.variables['state'] = None
-        except TypeError:
-            self.variables['state'] = None
-        except KeyError:
-            self.variables['state'] = None
-        logger.debug(self.variables)

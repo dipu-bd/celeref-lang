@@ -10,16 +10,11 @@ class Loop(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug(self.source)
         output = []
         for item in self._get_list():
             self.variables['state'] = item
-            statement = Statement({'block':  self.source}, variables=self.variables)
-            statement.execute()
-            self.variables.update(statement.variables)
-            output.append(self.variables['state'])
+            output.append(self.__eval(self.source))
         self.variables['state'] = output
-        logger.debug(self.variables)
 
     def _get_list(self):
         state = self.variables['state']

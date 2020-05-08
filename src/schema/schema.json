@@ -1,8 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema",
 
-  "title": "JSON schema for the parser",
-  "description": "Definitions for the JSON schema",
+  "description": "JSON schema for celeref programming language",
   "type": "object",
 
   "required": ["app"],
@@ -18,8 +17,38 @@
   },
 
   "definitions": {
+    "literal": {
+      "description": "A literal",
+      "type": ["string", "boolean", "null", "number", "integer"]
+    },
+
+    "statement": {
+      "description": "A statement block",
+      "oneOf": [
+        { "$ref": "#/definitions/literal" },
+        { "$ref": "#/definitions/element" },
+        { "$ref": "#/definitions/block" }
+      ]
+    },
+
+    "block": {
+      "description": "An array of statements",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/statement"
+      }
+    },
+
+    "expression": {
+      "description": "An expression",
+      "oneOf": [
+        { "$ref": "#/definitions/literal" },
+        { "$ref": "#/definitions/element" }
+      ]
+    },
+
     "function": {
-      "description": "A callable funtion",
+      "description": "A callable function",
       "type": "object",
       "required": ["method"],
       "additionalProperties": false,
@@ -29,31 +58,50 @@
           "type": "string"
         },
         "args": {
-          "description": "The arguments to pass\n\nYou can access a variable with #{variable-name} inside value string",
-          "type": "array"
+          "description": "The arguments to pass.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/expression" }
         },
         "kwargs": {
-          "description": "The keyword arguments to pass\n\nYou can access a variable with #{variable-name} inside value string",
+          "description": "The keyword arguments to pass.",
           "type": "object",
-          "propertyNames": { "minLength": 1 }
+          "propertyNames": { "minLength": 1 },
+          "patternProperties": {
+            "": { "$ref": "#/definitions/expression" }
+          }
         }
       }
     },
 
-    "statement": {
-      "description": "",
+    "element": {
+      "description": "A single statement. It consists of one and only one command.",
       "type": "object",
+      "minProperties": 1,
       "maxProperties": 1,
       "additionalProperties": false,
       "properties": {
+        "state": {
+          "description": "Set any value to the current state"
+        },
+
+        "load": {
+          "description": "Move the value of a variable to the current state",
+          "type": "string"
+        },
+
+        "save": {
+          "description": "Copy the value of the current state to a variable",
+          "type": "string"
+        },
+
         "set": {
-          "description": "Declare a set of variable names and their values. Previous declaration of the variable will be replaced by this declaration.\n\nYou can access a variable with #{variable-name} inside value string",
+          "description": "Declare a new variable and assign any value to it.\n\nWarning: If new variable already variable exists, the value will be replaced by this assignment.",
           "type": "object",
           "propertyNames": { "minLength": 1 }
         },
 
-        "copy": {
-          "description": "Declare a set of variable with values from existing ones.\n\nThe keys of this object are the names of new variables, and values are names of existing variables. If a variable does not exists, new variable's value will be set to null. If new variable name already exists, it's value will be replaced.",
+        "move": {
+          "description": "Move the value of a variable to a new variable\n\nThe keys of this object are the names of new variables, and values are names of old variables.\n\nWarning: If new variable already variable exists, the value will be replaced by this assignment.",
           "type": "object",
           "propertyNames": { "minLength": 1 },
           "patternProperties": {
@@ -61,46 +109,39 @@
           }
         },
 
-        "set-state": {
-          "description": "Set a constant value to the current state"
+        "if-else": {
+          "description": "If the current state evaluates to True, executes first statement available in the block, otherwise executes second statement.\n\nA state will be evaluated to true, when it is not false, zero, null or empty.\n\nNote: If you omit the second statement, the first statement will run, if the current state evaluates to True.",
+          "$ref": "#/definitions/block",
+          "minItems": 1,
+          "maxItems": 2
         },
 
-        "load-state": {
-          "description": "Load the value of a variable to the current state",
-          "type": "string"
-        },
-
-        "save-state": {
-          "description": "Copy the value of the current state to a variable",
-          "type": "string"
-        },
-
-        "block": {
-          "description": "A block of statements.\n\nAt the end of this block, you can set the `block:result` variable. The next state will be this `block:result` if available, otherwise the current `state`.",
+        "switch": {
+          "description": "An array of statement blocks with conditions. The `block` will run, if and only if the `condition` is evaluated to True",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/statement"
+            "description": "A conditional block",
+            "type": "object",
+            "required": ["condition"],
+            "additionalProperties": false,
+            "properties": {
+              "condition": { "$ref": "#/definitions/expression" },
+              "block": { "$ref": "#/definitions/statement" }
+            }
           }
         },
 
-        "if": {
-          "description": "Runs this block only if the current state evaluates to True. A state will be evaluated to True, when it is true, non-zero, non-null, or not empty.",
-          "$ref": "#/definitions/statement/properties/block"
-        },
-
-        "else": {
-          "description": "Runs this block only if the current state evaluates to False. A state will be evaluated False, when it is false, zero, null or empty.",
-          "$ref": "#/definitions/statement/properties/block"
-        },
-
         "loop": {
-          "description": "Loop over every elements of the current state.\n\nState does not necessarily be a list; if state is a number, loops from 0 to the state; if state is a string, loops over every characters; if state is an object, loops over very (key, value) pair.\n\nInside the loop, the current state is set to the loop iterator. All variable accessed by the parent block, can also be accessed here. \n\nThe final states of this block will be stored into a collection. The collection will be available as the next state.",
-          "$ref": "#/definitions/statement/properties/block"
+          "description": "Loop over every items of the current state.\n\nState does not necessarily be a list; if state is a number, loops from 0 to the state; if state is a string, loops over every characters; if state is an object, loops over every (key, value) pair.\n\nInside the loop, the current state is set to the loop iterator. All variable accessed by the parent block, can also be accessed here. \n\nThe final states of this block will be stored into a collection. The collection will be available as the next state.",
+          "$ref": "#/definitions/statement"
         },
 
         "at": {
-          "description": "Access an indexed element of the current state. The current state must be an array, or map or support access via index. The next state will be the accessed value",
-          "type": ["string", "integer"]
+          "description": "Access an indexed item of the current state. The current state must be an array, or map or support access via index. The next state will be the accessed value",
+          "oneOf": [
+            { "type": ["string", "integer"] },
+            { "$ref": "#/definitions/element" }
+          ]
         },
 
         "dot": {
@@ -108,13 +149,13 @@
           "type": "string"
         },
 
-        "dot-call": {
-          "description": "Calls a method of the current state, with some arguments. The next state will be the output of the method",
+        "call": {
+          "description": "Calls a function with current state as argument. The next state will be the output of the function",
           "$ref": "#/definitions/function"
         },
 
-        "call": {
-          "description": "Calls a function with current state as argument. The next state will be the output of the function",
+        "dot-call": {
+          "description": "Calls a method of the current state, with some arguments. The next state will be the output of the method",
           "$ref": "#/definitions/function"
         }
       }
