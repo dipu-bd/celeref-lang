@@ -11,15 +11,15 @@ class SwitchBlock(Statement):
 
     def execute(self):
         logger.debug('source: %s', self.source)
-        for source in self.source:
-            condition_source = source.get('condition')
+        for case in self.source:
+            condition_source = case.get('condition')
             super()._eval(condition_source)
             if self.variables['state']:
-                if 'true' in source:
-                    super()._eval(source['true'])
+                if 'true' in case:
+                    super()._eval(case['true'])
             else:
-                if 'false' in source:
-                    super()._eval(source['false'])
-            if 'finally' in source:
-                super()._eval(source['finally'])
+                if 'false' in case:
+                    super()._eval(case['false'])
+            if 'finally' in case:
+                super()._eval(case['finally'])
         logger.debug('variables: %s', self.variables)

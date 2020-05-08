@@ -1,0 +1,103 @@
+{
+  "$schema": "../src/schema/schema.json",
+  "name": "Conditional Branches",
+  "program": [
+    {
+      "switch": [
+        {
+          "condition": { "state": [] },
+          "true": "[] evaluates to True",
+          "false": "[] evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": [1, 2] },
+          "true": "[1, 2] evaluates to True",
+          "false": "[1, 2] evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": {} },
+          "true": "{} evaluates to True",
+          "false": "{} evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": { "num": 3 } },
+          "true": "{ \"num\": 3 } evaluates to True",
+          "false": "{ \"num\": 3 } evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": null },
+          "true": "null evaluates to True",
+          "false": "null evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": true },
+          "true": "true evaluates to True",
+          "false": "true evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": false },
+          "true": "false evaluates to True",
+          "false": "false evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": 0 },
+          "true": "0 evaluates to True",
+          "false": "0 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": 1 },
+          "true": "1 evaluates to True",
+          "false": "1 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": -1 },
+          "true": "-1 evaluates to True",
+          "false": "-1 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": 0.0 },
+          "true": "0.0 evaluates to True",
+          "false": "0.0 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": -0.0 },
+          "true": "-0.0 evaluates to True",
+          "false": "-0.0 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": 2.5 },
+          "true": "2.5 evaluates to True",
+          "false": "2.5 evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": "" },
+          "true": "\"\" evaluates to True",
+          "false": "\"\" evaluates to False",
+          "finally": { "print": "state" }
+        },
+        {
+          "condition": { "state": "str" },
+          "true": "\"str\" evaluates to True",
+          "false": "\"str\" evaluates to False",
+          "finally": { "print": "state" }
+        }
+      ]
+    },
+    {
+      "state": "Hooray!"
+    }
+  ]
+}

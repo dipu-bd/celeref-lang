@@ -113,7 +113,7 @@
         },
 
         "switch": {
-          "description": "An array of statement blocks with conditions.\n\nThe `true` will run, if and only if the `condition` is evaluated to True; otherwise `false` will run. Both `true` and `false` blocks are optional.",
+          "description": "An array of statement blocks with a condition.\n\nThe `true` will run, if and only if the `condition` is evaluated to True; otherwise `false` will run. Both `true` and `false` blocks are optional.\n\nAnother optional block `finally` will only run after executing first three blocks.",
           "type": "array",
           "items": {
             "description": "A conditional block",
@@ -123,7 +123,8 @@
             "properties": {
               "condition": { "$ref": "#/definitions/statement" },
               "true": { "$ref": "#/definitions/statement" },
-              "false": { "$ref": "#/definitions/statement" }
+              "false": { "$ref": "#/definitions/statement" },
+              "finally": { "$ref": "#/definitions/statement" }
             }
           }
         },

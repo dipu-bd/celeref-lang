@@ -33,16 +33,15 @@ class Statement:
         logger.debug('variables: %s', self.variables)
 
     def _eval(self, source: Any):
-        '''Evaluates the source preserving the current state'''
-        if isinstance(source, dict):
+        if isinstance(source, list):
+            for block in source:
+                self._eval(block)
+        elif isinstance(source, dict):
             [(key, source)] = source.items()
             builder: Statement = all_statements[key]
             statement = builder(source, self.variables)
             statement.execute()
             self.variables.update(statement.variables)
-        elif isinstance(source, list):
-            for block in source:
-                self._eval(block)
         else:
             self.variables['state'] = source
 
