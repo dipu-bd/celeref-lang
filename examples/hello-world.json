@@ -1,7 +1,12 @@
 {
   "$schema": "../src/schema/schema.json",
   "name": "Hello World",
-  "program": {
-    "state": "Hello World"
-  }
+  "program": [
+    {
+      "state": "Hello World"
+    },
+    {
+      "print": "state"
+    }
+  ]
 }

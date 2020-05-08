@@ -8,11 +8,11 @@ from celeref_parser.functions import public_functions
 
 # logging.basicConfig(level=logging.DEBUG)
 
-print(all_statements)
-print()
+# print(all_statements)
+# print()
 
-print(public_functions)
-print()
+# print(public_functions)
+# print()
 
 if len(sys.argv) < 2:
     print('Need a valid JSON file')
@@ -21,5 +21,5 @@ if len(sys.argv) < 2:
 app = create_app(sys.argv[1])
 app.execute()
 
-print()
-print(app.result)
+# print()
+# print(app.result)
