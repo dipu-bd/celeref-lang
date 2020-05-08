@@ -1,13 +1,13 @@
+import glob
 import importlib
 import logging
 import os
-import re
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 logger = logging.getLogger(__name__)
 
 
-# This list will be auto-generated
+# This lists will be auto-generated
 all_statements = {}
 
 
@@ -19,6 +19,7 @@ class Statement:
         self.variables: dict = dict()
         self.variables.update(variables or {})
         self.variables.setdefault('state', None)
+        self.methods: dict = dict()
 
     def execute(self):
         logger.debug(self.source)
@@ -39,16 +40,12 @@ class Statement:
         return self.variables['state']
 
 
-# Auto-import all submodules in the current directory
-__module_regex = re.compile(r'^([^_.][^.]+).py[c]?$', re.IGNORECASE)
-for entry in os.listdir(__path__[0]):
-    file_path = os.path.join(__path__[0], entry)
-    if not os.path.isfile(file_path):
+# Auto-import all statements
+_cdir_ = os.path.dirname(__file__)
+for entry in glob.glob(_cdir_ + '/*.py', recursive=True):
+    module_name = '.'.join(os.path.basename(entry).split('.')[:-1])
+    if module_name[0] in '_.':
         continue
-    regex_result = __module_regex.findall(entry)
-    if len(regex_result) != 1:
-        continue
-    module_name = regex_result[0]
     module = importlib.import_module('.' + module_name, package=__package__)
     for key in dir(module):
         item = getattr(module, key)

@@ -12,7 +12,7 @@ class Loop(Statement):
     def execute(self):
         logger.debug(self.source)
         output = []
-        for item in self.get_list():
+        for item in self._get_list():
             self.variables['state'] = item
             statement = Statement({'block':  self.source}, variables=self.variables)
             statement.execute()
@@ -21,7 +21,7 @@ class Loop(Statement):
         self.variables['state'] = output
         logger.debug(self.variables)
 
-    def get_list(self):
+    def _get_list(self):
         state = self.variables['state']
         if isinstance(state, list):
             return state

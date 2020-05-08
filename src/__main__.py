@@ -4,10 +4,14 @@ import sys
 import logging
 from celeref_parser import create_app
 from celeref_parser.statements import all_statements
+from celeref_parser.functions import public_functions
 
 logging.basicConfig(level=logging.DEBUG)
 
 print(all_statements)
+print()
+
+print(public_functions)
 print()
 
 if len(sys.argv) < 2:

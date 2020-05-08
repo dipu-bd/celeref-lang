@@ -15,5 +15,7 @@ class DotCall(Statement):
         kwargs = self.source['kwargs']
         state = self.variables['state']
         method = getattr(state, self.source, None)
+        if not method:
+            raise TypeError('No such method')
         self.variables['state'] = method(*args, **kwargs)
         logger.debug(self.variables)
