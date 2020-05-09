@@ -33,7 +33,7 @@ Here is a sample program written in it:
 You need Python 3 to execute this script.
 
 - First create a new virtual environment
-  - `python3 -m venv venv`
+  - `python -m venv venv`
 - Activate it;
   - In Windows: `venv\Scripts\activate`
   - In Linux: `venv/bin/activate`
@@ -56,8 +56,16 @@ Hello World
 This project in under development. APIs are subjected to change in future.
 Documentation is further away. Follow schema descriptions for basic documentation for now.
 
-Below are list of public function available to use with `call`. All these method are ported
-directly from [python built-ins](https://docs.python.org/3/library/functions.html).
+To note a few basic things:
+
+- `state` is a very important variable in this program. After executing a statement,
+  the result is always stored in state first.
+- After program has finished running the final value of `state` will be the result.
+- To pass and array or objects as arguments to `call` method,
+  you can use `{ "state": <your array or object> }`.
+- Below are list of public function available to use with `call`.
+  All these method are ported directly from [python built-ins](https://docs.python.org/3/library/functions.html).
+  See the docs there for documentation.
 
 ```txt
     abs         all         any         ascii       bin         breakpoint      chr
