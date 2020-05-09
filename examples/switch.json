@@ -95,9 +95,6 @@
           "finally": { "print": "state" }
         }
       ]
-    },
-    {
-      "state": "Hooray!"
     }
   ]
 }

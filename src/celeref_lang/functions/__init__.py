@@ -19,11 +19,12 @@ for entry in glob.glob(_cur_dir_ + '/*.py'):
         continue
     module = importlib.import_module('.' + module_name, package=__package__)
     for key in dir(module):
-        item = getattr(module, key)
-        if not callable(item):
+        if key[0] in '_.':
             continue
-        function_name = module_name
-        public_functions[function_name] = item
+        item = getattr(module, key)
+        if callable(item):
+            function_name = module_name + '.' + key
+            public_functions[function_name] = item
 
 
 # Add safe built-in functions

@@ -67,7 +67,6 @@
     "expression": {
       "description": "A single statement. It consists of one and only one command.",
       "type": "object",
-      "minProperties": 1,
       "maxProperties": 1,
       "additionalProperties": false,
       "properties": {

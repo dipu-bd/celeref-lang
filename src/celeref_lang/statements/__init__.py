@@ -37,11 +37,12 @@ class Statement:
             for block in source:
                 self._eval(block)
         elif isinstance(source, dict):
-            [(key, source)] = source.items()
-            builder: Statement = all_statements[key]
-            statement = builder(source, self.variables)
-            statement.execute()
-            self.variables.update(statement.variables)
+            if len(source) == 1:
+                [(key, source)] = source.items()
+                builder: Statement = all_statements[key]
+                statement = builder(source, self.variables)
+                statement.execute()
+                self.variables.update(statement.variables)
         else:
             self.variables['state'] = source
 
