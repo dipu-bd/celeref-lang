@@ -1,0 +1,18 @@
+{
+  "$schema": "../src/celeref_lang/schema/schema.json",
+  "name": "Conditional Branches",
+  "program": [
+    { "state": 5 },
+    { "loop": [] },
+    { "print": "state" },
+    {
+      "loop": {
+        "call": {
+          "method": "op.plus",
+          "args": [{}, 5]
+        }
+      }
+    },
+    { "print": "state" }
+  ]
+}

@@ -7,7 +7,7 @@ def plus(*args):
     Same as `sum(*args)`
 
     Add arbitrary number of arguments'''
-    return sum(*args)
+    return sum(args)
 
 
 def minus(a, b):
@@ -25,7 +25,7 @@ def cross(*args):
     Same as `math.prod(*args)`
 
     Multiply arbitrary number of arguments'''
-    return math.prod(*args)
+    return math.prod(args)
 
 
 def div(a, b):

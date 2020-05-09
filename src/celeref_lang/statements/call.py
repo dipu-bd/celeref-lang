@@ -29,6 +29,7 @@ class Call(Statement):
             super()._eval(source)
             args.append(self.result)
         self.variables['state'] = state
+        logger.debug('args: %s', args)
         return args
 
     def _get_kwargs(self):
@@ -38,4 +39,5 @@ class Call(Statement):
             super()._eval(source)
             kwargs[key] = self.result
         self.variables['state'] = state
+        logger.debug('kwargs: %s', kwargs)
         return kwargs
