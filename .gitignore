@@ -1,5 +1,4 @@
 # My app specific
-/.vscode
 /venv*
 
 # Byte-compiled / optimized / DLL files

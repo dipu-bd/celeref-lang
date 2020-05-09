@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "cSpell.enableFiletypes": [
+        "json"
+    ],
+    "cSpell.words": [
+        "celeref",
+        "kwargs",
+        "nargs"
+    ]
+}
