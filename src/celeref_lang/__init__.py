@@ -25,14 +25,20 @@ def read_json(filename: str) -> Mapping[str, Any]:
         data = json.load(fp)
 
     schema = {}
-    url = data['$schema']
-    if re.search(r'^https?://', url, flags=re.IGNORECASE):
-        resp = requests.get(url, allow_redirects=True)
-        resp.raise_for_status()
-        schema = json.loads(resp.text)
-    else:
-        schema_path = os.path.join(filename, '..', url)
-        with open(os.path.normpath(schema_path)) as fp:
+    try:
+        url = data['$schema']
+        if re.search(r'^https?://', url, flags=re.IGNORECASE):
+            resp = requests.get(url, allow_redirects=True)
+            resp.raise_for_status()
+            schema = json.loads(resp.text)
+        else:
+            schema_path = os.path.join(filename, '..', url)
+            with open(os.path.normpath(schema_path)) as fp:
+                schema = json.load(fp)
+    except Exception:
+        logger.exception('Failed to get schema from %s', url)
+        curdir = os.path.dirname(__file__)
+        with open(os.path.join(curdir, 'schema', 'schema.json')) as fp:
             schema = json.load(fp)
 
     validate(instance=data, schema=schema)

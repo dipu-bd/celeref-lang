@@ -25,6 +25,9 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
+    package_data={
+        'celeref_lang': ['schema/*.json']
+    },
     entry_points={
         "console_scripts": [
             "celeref = celeref_lang.main:main",

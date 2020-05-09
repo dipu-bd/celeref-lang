@@ -1,5 +1,5 @@
 {
-  "$schema": "../src/schema/schema.json",
+  "$schema": "../src/celeref_lang/schema/schema.json",
   "name": "Hello World",
   "program": [
     {
