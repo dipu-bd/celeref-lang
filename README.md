@@ -1,6 +1,6 @@
 # celeref-lang
 
-An versatile interpreter written in python to execute programs written in JSON.
+A versatile interpreter in python to execute programs written in JSON.
 
 ## Writing new program
 
