@@ -68,10 +68,10 @@ To note a few basic things:
   See the docs there for documentation.
 
 ```txt
-    abs         all         any         ascii       bin         breakpoint      chr
-    dir         divmod      enumerate   filter      float       format          hash
-    hex         input       int         iter        len         license         list
-    map         max         min         next        oct         ord             pow
-    print       quit        range       repr        reversed    round           set
-    sorted      str         sum         tuple       type        zip
+    abs         all         any         ascii       bin         bool        bytearray
+    bytes       chr         divmod      enumerate   float       format      hash
+    hex         input       int         iter        len         license     list
+    map         max         min         next        oct         ord         pow
+    print       range       reversed    round       set         slice       sorted
+    str         sum         tuple       type        zip
 ```
