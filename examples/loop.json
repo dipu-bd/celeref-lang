@@ -2,15 +2,20 @@
   "$schema": "../src/celeref_lang/schema/schema.json",
   "name": "Conditional Branches",
   "program": [
-    { "state": 5 },
+    { "state": 100 },
     { "loop": [] },
-    { "print": "state" },
     {
       "loop": {
         "call": {
           "method": "op.plus",
-          "args": [{}, 5]
+          "args": [{}, 10]
         }
+      }
+    },
+    {
+      "call": {
+        "method": "sum",
+        "args": [{}]
       }
     },
     { "print": "state" }
