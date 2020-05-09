@@ -2,60 +2,110 @@ import math
 
 
 def plus(*args):
-    '''summation'''
+    '''
+    plus(*args) -> number
+    Same as `sum(*args)`
+
+    Add arbitrary number of arguments'''
     return sum(*args)
 
 
 def minus(a, b):
-    '''substract'''
+    '''
+    minus(a, b) -> number
+    Same as `a - b`
+
+    Substract first number from second'''
     return a - b
 
 
 def cross(*args):
-    '''multiply'''
+    '''
+    cross(*args) -> number
+    Same as `math.prod(*args)`
+
+    Multiply arbitrary number of arguments'''
     return math.prod(*args)
 
 
 def div(a, b):
-    ''''division'''
+    '''
+    div(a, b) -> number
+    Same as `a / b`
+
+    Floating point division of two numbers'''
     return a / b
 
 
 def floordiv(a, b):
-    '''interger division'''
+    '''
+    floordiv(a, b) -> number
+    Same as `a // b`
+
+    Interger division between two numbers'''
     return a // b
 
 
 def mod(a, b):
-    '''modulus'''
+    '''
+    mod(a, b) -> number
+    Same as `a % b`
+
+    Find the modulus of two numbers'''
     return a % b
 
 
 def eq(*args):
-    '''equal'''
+    '''
+    eq(*args) -> bool
+    Same as `len(set(args)) == 1`
+
+    Check if all arguments are equal'''
     return len(set(args)) == 1
 
 
 def neq(*args):
-    '''not equal'''
+    '''
+    neq(*args) -> bool
+    Same as `len(args) == len(set(args))`
+
+    Check if no arguments are unique
+    '''
     return len(args) == len(set(args))
 
 
 def gt(a, b):
-    '''greater than'''
+    '''
+    gt(a, b) -> bool
+    Same as `a > b`
+
+    Check if first argument is greater than the second
+    '''
     return a > b
 
 
 def lt(a, b):
-    '''less than'''
+    '''
+    lt(a, b) -> bool
+    Same as `a < b`
+
+    Check if first argument is less than the second'''
     return a < b
 
 
 def geq(a, b):
-    '''greater than or equal'''
+    '''
+    geq(a, b) -> bool
+    Same as `a >= b`
+
+    Check if first argument is greater than or equal to the second'''
     return a >= b
 
 
 def leq(a, b):
-    '''less than or equal'''
+    '''
+    leq(a, b) -> bool
+    Same as `a <= b`
+
+    Check if first argument is less than or equal to the second'''
     return a <= b

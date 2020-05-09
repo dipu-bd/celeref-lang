@@ -28,8 +28,10 @@ def show_functions(query: list):
                 exists = True
                 break
         if exists:
-            print('[%s]' % key)
-            print(public_functions[key].__doc__)
+            print('----- [%s] -----' % key)
+            doc = public_functions[key].__doc__
+            doc = '\n'.join([s.strip() for s in doc.split('\n')])
+            print(doc.strip())
             print('')
     exit(0)
 
