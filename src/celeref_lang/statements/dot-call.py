@@ -10,11 +10,11 @@ class DotCall(Call):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         method_name = self.source.get('method', '')
         method = getattr(self.variables['state'], method_name)
 
         args = super()._get_args()
         kwargs = super()._get_kwargs()
         self.variables['state'] = method(*args, **kwargs)
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)

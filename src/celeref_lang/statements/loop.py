@@ -10,24 +10,27 @@ class Loop(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         output = []
         for item in self._get_list():
             self.variables['state'] = item
             super()._eval(self.source)
             output.append(self.result)
         self.variables['state'] = output
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)
 
     def _get_list(self):
+        if hasattr(self, '_list'):
+            return self._list
         state = self.variables['state']
         if isinstance(state, list):
-            return state
+            self._list = state
         elif isinstance(state, int):
-            return range(0, state, -1 if state < 0 else 1)
+            self._list = range(0, state, -1 if state < 0 else 1)
         elif isinstance(state, str):
-            return list(state)
+            self._list = list(state)
         elif isinstance(state, dict):
-            return state.items()
+            self._list = state.items()
         else:
-            return []
+            self._list = []
+        return self._list

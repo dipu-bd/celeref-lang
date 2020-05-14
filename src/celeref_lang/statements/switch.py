@@ -10,7 +10,7 @@ class SwitchBlock(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         for case in self.source:
             condition_source = case.get('condition')
             super()._eval(condition_source)
@@ -22,4 +22,4 @@ class SwitchBlock(Statement):
                     super()._eval(case['false'])
             if 'finally' in case:
                 super()._eval(case['finally'])
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)

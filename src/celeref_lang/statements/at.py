@@ -11,7 +11,7 @@ class At(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         state = self.variables['state']
         super()._eval(self.source)
         index = self.result
@@ -22,4 +22,4 @@ class At(Statement):
                 self.variables['state'] = None
         except Union[IndexError, TypeError, KeyError]:
             self.variables['state'] = None
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)

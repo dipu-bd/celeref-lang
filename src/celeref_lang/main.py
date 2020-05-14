@@ -32,7 +32,7 @@ def show_functions(query: list):
 
 def main():
     args = parser.parse_args()
-    logger.debug(args)
+    # logger.debug(args)
 
     if args.search != '':
         show_functions(args.search)

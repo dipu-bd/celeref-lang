@@ -11,7 +11,7 @@ class Call(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         method_name = self.source.get('method', '')
         method = public_functions.get(method_name)
         if not method:
@@ -20,7 +20,7 @@ class Call(Statement):
         args = self._get_args()
         kwargs = self._get_kwargs()
         self.variables['state'] = method(*args, **kwargs)
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)
 
     def _get_args(self):
         args = []
@@ -29,7 +29,7 @@ class Call(Statement):
             super()._eval(source)
             args.append(self.result)
         self.variables['state'] = state
-        logger.debug('args: %s', args)
+        # logger.debug('args: %s', args)
         return args
 
     def _get_kwargs(self):
@@ -39,5 +39,5 @@ class Call(Statement):
             super()._eval(source)
             kwargs[key] = self.result
         self.variables['state'] = state
-        logger.debug('kwargs: %s', kwargs)
+        # logger.debug('kwargs: %s', kwargs)
         return kwargs

@@ -10,6 +10,6 @@ class PrintVariable(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         print(self.variables.get(self.source, None))
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)

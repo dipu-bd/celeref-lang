@@ -10,7 +10,7 @@ class MoveVariables(Statement):
         super().__init__(source, variables=variables)
 
     def execute(self):
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         for new_var, old_var in self.source.items():
             self.variables[new_var] = self.variables.get(old_var, None)
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)

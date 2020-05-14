@@ -2,7 +2,7 @@
   "$schema": "../src/celeref_lang/schema/schema.json",
   "name": "Conditional Branches",
   "program": [
-    { "state": 100 },
+    { "state": 1000000 },
     { "loop": [] },
     {
       "loop": {

@@ -28,9 +28,9 @@ class Statement:
 
     def execute(self) -> None:
         '''Executes the script, and returns the last state'''
-        logger.debug('source: %s', self.source)
+        # logger.debug('source: %s', self.source)
         self._eval(self.source)
-        logger.debug('variables: %s', self.variables)
+        # logger.debug('variables: %s', self.variables)
 
     def _eval(self, source: Any):
         if isinstance(source, list):
